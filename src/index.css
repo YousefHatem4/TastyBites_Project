@@ -29,3 +29,14 @@
     font-family: "Dancing Script", cursive;
     font-size: 32px;
 }
+
+.home-font {
+    font-family: "Dancing Script", cursive;
+    font-size: 56px;
+    line-height: 67px;
+    font-weight: 700;
+}
+
+.nice-font{
+    font-family: "Dancing Script", cursive;
+}
