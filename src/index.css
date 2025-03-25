@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+.main-color{
+    color:#FFBE33;
+}
+
+.bg-main-color{
+    color:#FFBE33;
+}
+
+.main-color:hover{
+    color:#d99e1f;
+}
+
+.sec_color{
+    color:#222831
+}
+
+.sec_bg{
+    background-color:#222831
+}
+
+.main-font{
+    font-family: "Open Sans", sans-serif;
+    font-size: 32px;
+}
+
+.sec-font{
+    font-family: "Dancing Script", cursive;
+    font-size: 32px;
+}
