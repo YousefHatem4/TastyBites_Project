@@ -6,10 +6,10 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="absolute w-full bg-[url('/hero-bg.jpg')]">
+      <nav className=" w-full bg-gradient-to-r from-[#0D0E10] to-[#232829]">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
           <NavLink to={""} className="flex items-center space-x-3 rtl:space-x-reverse">
-            <span className="sec-font self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            <span className="sec-font self-center text-2xl font-semibold whitespace-nowrap text-white">
               TastyBites
             </span>
           </NavLink>
@@ -36,12 +36,12 @@ export default function Navbar() {
             </button>
           </div>
           <div className={`items-center justify-between ${open ? "block" : "hidden"} w-full md:flex md:w-auto md:order-1`} id="navbar-cta">
-            <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-transparent md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
+            <ul className="flex flex-col  font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-transparent md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
               <li>
                 <NavLink
                   to="/"
                   className={({ isActive }) =>
-                    `hover:text-[#d99e1f] block py-2 px-3 md:p-0 rounded-sm ${isActive ? "main-color text-white md:bg-transparent" : "text-gray-900 dark:text-white"
+                    `hover:text-[#d99e1f] block py-2 px-3 md:p-0 rounded-sm ${isActive ? "main-color text-white md:bg-transparent" : "text-gray-900 text-white"
                     }`
                   }
                 >
@@ -52,7 +52,7 @@ export default function Navbar() {
                 <NavLink
                   to="/menu"
                   className={({ isActive }) =>
-                    `hover:text-[#d99e1f] block py-2 px-3 md:p-0 rounded-sm ${isActive ? "main-color text-white md:bg-transparent" : "text-gray-900 dark:text-white"
+                    `hover:text-[#d99e1f] block py-2 px-3 md:p-0 rounded-sm ${isActive ? "main-color text-white md:bg-transparent" : "text-gray-900 text-white"
                     }`
                   }
                 >
@@ -63,7 +63,7 @@ export default function Navbar() {
                 <NavLink
                   to="/about"
                   className={({ isActive }) =>
-                    `hover:text-[#d99e1f] block py-2 px-3 md:p-0 rounded-sm ${isActive ? "main-color text-white md:bg-transparent" : "text-gray-900 dark:text-white"
+                    `hover:text-[#d99e1f] block py-2 px-3 md:p-0 rounded-sm ${isActive ? "main-color text-white md:bg-transparent" : "text-gray-900 text-white"
                     }`
                   }
                 >
