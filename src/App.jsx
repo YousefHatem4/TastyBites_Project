@@ -5,6 +5,8 @@ import Home from './component/Home/Home'
 import Menu from './component/Menu/Menu'
 import About from './component/About/About'
 import Error from './component/Error/Error'
+import Login from './component/Login/Login'
+import Register from './component/Register/Register'
 
 
 
@@ -16,6 +18,8 @@ const routers = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'menu', element: <Menu /> },
       { path: 'about', element: <About /> },
+      { path: 'login', element: <Login/> },
+      { path: 'register', element: <Register/> },
       { path: '*', element: <Error /> },
     ]
   }

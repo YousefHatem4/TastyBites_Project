@@ -13,7 +13,7 @@ export default function Navbar() {
               TastyBites
             </span>
           </NavLink>
-          <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+          <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse justify-center items-center">
             <Link
               to={"menu"}
               type="button"
@@ -21,6 +21,11 @@ export default function Navbar() {
             >
               <i className="fa-solid fa-cart-shopping"></i> Order Now
             </Link>
+            
+                <Link to={"login"} className=" text-white uppercase pl-2 hover:text-[#d99e1f]">
+                Log out
+                </Link>
+              
             <button
               onClick={() => setOpen(!open)}
               data-collapse-toggle="navbar-cta"
@@ -70,6 +75,29 @@ export default function Navbar() {
                   About
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/login"
+                  className={({ isActive }) =>
+                    `hover:text-[#d99e1f] block py-2 px-3 md:p-0 rounded-sm ${isActive ? "main-color text-white md:bg-transparent" : "text-gray-900 text-white"
+                    }`
+                  }
+                >
+                  Log in
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/register"
+                  className={({ isActive }) =>
+                    `hover:text-[#d99e1f] block py-2 px-3 md:p-0 rounded-sm ${isActive ? "main-color text-white md:bg-transparent" : "text-gray-900 text-white"
+                    }`
+                  }
+                >
+                  Register
+                </NavLink>
+              </li>
+              
             </ul>
           </div>
         </div>
