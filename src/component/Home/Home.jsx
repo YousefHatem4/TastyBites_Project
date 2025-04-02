@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 export default function Home() {
-
+  const navigate = useNavigate();
 
   const menuItems = [
     {
@@ -74,12 +74,13 @@ export default function Home() {
             <p className="text-white text-sm sm:text-base md:text-lg mb-6 sm:mb-8 md:mb-10 max-w-lg mx-auto md:mx-0">
               TastyBites is a vibrant fast-food restaurant serving up delicious, quick, and satisfying meals. From juicy burgers and crispy fries to fresh wraps and savory snacks, we bring bold flavors and quality ingredients to every bite.
             </p>
-            <button
-              type="button"
-              className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-8 sm:px-10 py-2 sm:py-3 focus:ring-4 focus:border-none focus:outline-none font-medium text-sm sm:text-base transition duration-300"
-            >
-              Order Now
-            </button>
+          <button
+            type="button"
+            className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-8 sm:px-10 py-2 sm:py-3 focus:ring-4 focus:border-none focus:outline-none font-medium text-sm sm:text-base transition duration-300"
+            onClick={() => navigate("/payment")} 
+          >
+            Order Now
+          </button>
           </div>
         </div>
       </header>
@@ -105,6 +106,7 @@ export default function Home() {
                 <button
                   type="button"
                   className="self-start text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-6 sm:px-8 py-2 focus:ring-4 focus:outline-none font-medium text-sm sm:text-base transition duration-300"
+                  onClick={() => navigate("/payment")} 
                 >
                   Order Now <i className="fa-solid fa-cart-shopping ml-2"></i>
                 </button>
@@ -129,6 +131,7 @@ export default function Home() {
                 <button
                   type="button"
                   className="self-start text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-6 sm:px-8 py-2 focus:ring-4 focus:outline-none font-medium text-sm sm:text-base transition duration-300"
+                  onClick={() => navigate("/payment")} 
                 >
                   Order Now <i className="fa-solid fa-cart-shopping ml-2"></i>
                 </button>
@@ -176,7 +179,7 @@ export default function Home() {
                     <p className='text-[#FFFFFF]'>{item.price} EGP</p>
                     <button
                       className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-3 focus:ring-4 focus:outline-none font-medium text-sm py-2 text-center transition-colors"
-                      onClick={() => console.log(`Added ${item.name} to cart`)}
+                      onClick={() => navigate("/payment")}
                     >
                       <i className="fa-solid fa-cart-shopping"></i>
                     </button>

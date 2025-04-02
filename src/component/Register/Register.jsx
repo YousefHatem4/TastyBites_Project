@@ -36,8 +36,8 @@ export default function Register() {
                     </div>
                 </div>
 
-                <div className='flex items-center justify-between'>
-                    <button type="submit" class="text-white bg-[#FFBE33] hover:bg-[#ffbe33e6] focus:ring-4 focus:outline-none focus:ring-[#FFBE33] font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-[#FFBE33] dark:hover:bg-[#FFBE33] dark:focus:ring-[#ffbe33d0]">Submit</button>
+                <div className='flex flex-col gap-2 md:flex-row items-center md:justify-between'>
+                    <button type="submit" class="text-white bg-[#FFBE33] hover:bg-[#ffbe33e6] focus:ring-4 focus:outline-none focus:ring-[#FFBE33] font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-[#FFBE33] dark:hover:bg-[#FFBE33] dark:focus:ring-[#ffbe33d0] hover:cursor-pointer">Submit</button>
                     <Link to={'/login'} className='text-[#FFBE33] uppercase hover:text-[#ffbe33e6]'>Have Email Already</Link>
                 </div>
             </form>

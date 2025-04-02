@@ -7,6 +7,7 @@ import About from './component/About/About'
 import Error from './component/Error/Error'
 import Login from './component/Login/Login'
 import Register from './component/Register/Register'
+import Payment from './component/Payment/Payment'
 
 
 
@@ -21,6 +22,7 @@ const routers = createBrowserRouter([
       { path: 'login', element: <Login/> },
       { path: 'register', element: <Register/> },
       { path: '*', element: <Error /> },
+      { path: 'payment', element: <Payment/> }
     ]
   }
 ])

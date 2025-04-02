@@ -14,13 +14,10 @@ export default function Navbar() {
             </span>
           </NavLink>
           <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse justify-center items-center">
-            <Link
-              to={"menu"}
-              type="button"
-              className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-10 focus:ring-4 focus:outline-none font-medium text-sm  py-2 text-center"
-            >
-              <i className="fa-solid fa-cart-shopping"></i> Order Now
-            </Link>
+
+                  <Link to="/payment" className="self-start text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-6 sm:px-8 py-2 focus:ring-4 focus:outline-none font-medium text-sm sm:text-base transition duration-300">
+                      <i className="fa-solid fa-cart-shopping"></i> Order Now
+                 </Link>
             
                 <Link to={"login"} className=" text-white uppercase pl-2 hover:text-[#d99e1f]">
                 Log out
