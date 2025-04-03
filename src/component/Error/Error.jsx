@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Error = () => {
-  return (
+export default function Error(){
+  return <>
     <div className="flex flex-col items-center justify-center min-h-screen bg-white-100 p-6">
       <div className="bg-white rounded-2xl p-8 max-w-md w-full text-center">
         <h1 className="text-5xl font-bold text-red-500 mb-4">404</h1>
@@ -10,12 +10,10 @@ const Error = () => {
         <p className="text-gray-600 mb-6">
           Oops! The page you're looking for doesn't exist.
         </p>
-        <Link to="/" className="bg-yellow-500 text-white py-3 px-6 rounded-lg hover:bg-blue-600 transition">
+        <Link to="/" className="bg-[#FFBE33] text-white py-3 px-6 rounded-lg hover:bg-yellow-400 transition">
           Back to Home
         </Link>
       </div>
     </div>
-  );
+    </>
 };
-
-export default Error;
