@@ -1,4 +1,4 @@
-import React, { useState } from "react"; 
+import React, { useState } from "react";
 
 export default function Payment() {
   // State for items with quantities
@@ -27,14 +27,6 @@ export default function Payment() {
           <h2 className="text-xl font-bold mb-4">Billing Details</h2>
           <form className="space-y-4">
             <div>
-              <label className="block font-medium">First Name*</label>
-              <input type="text" required className="w-full p-2 border rounded-md" />
-            </div>
-            <div>
-              <label className="block font-medium">Company Name</label>
-              <input type="text" className="w-full p-2 border rounded-md" />
-            </div>
-            <div>
               <label className="block font-medium">Street Address*</label>
               <input type="text" required className="w-full p-2 border rounded-md" />
             </div>
@@ -50,10 +42,7 @@ export default function Payment() {
               <label className="block font-medium">Phone Number*</label>
               <input type="tel" required className="w-full p-2 border rounded-md" />
             </div>
-            <div>
-              <label className="block font-medium">Email Address*</label>
-              <input type="email" required className="w-full p-2 border rounded-md" />
-            </div>
+           
             <div className="flex items-center gap-2">
               <input type="checkbox" className="w-5 h-5" />
               <span className="text-sm">Save this information for faster checkout next time</span>
@@ -70,14 +59,14 @@ export default function Payment() {
                 <div className="flex items-center gap-4">
                   <span className="font-bold">{item.name}</span>
                   <div className="flex items-center border rounded-md">
-                    <button 
+                    <button
                       onClick={() => handleQuantityChange(index, item.quantity - 1)}
                       className="w-8 h-8 flex items-center justify-center hover:bg-gray-100"
                     >
                       -
                     </button>
                     <span className="mx-2 w-6 text-center">{item.quantity}</span>
-                    <button 
+                    <button
                       onClick={() => handleQuantityChange(index, item.quantity + 1)}
                       className="w-8 h-8 flex items-center justify-center hover:bg-gray-100"
                     >

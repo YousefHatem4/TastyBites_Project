@@ -77,7 +77,7 @@ export default function Home() {
           <button
             type="button"
             className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-8 sm:px-10 py-2 sm:py-3 focus:ring-4 focus:border-none focus:outline-none font-medium text-sm sm:text-base transition duration-300"
-            onClick={() => navigate("/payment")} 
+            onClick={() => navigate("/menu")} 
           >
             Order Now
           </button>
