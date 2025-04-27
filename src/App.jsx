@@ -8,6 +8,8 @@ import Error from './component/Error/Error'
 import Login from './component/Login/Login'
 import Register from './component/Register/Register'
 import Payment from './component/Payment/Payment'
+import UserContextProvider from './component/Context/userContext'
+import ProtectedRoute from './component/ProtectedRoute/ProtectedRoute'
 
 
 
@@ -16,13 +18,14 @@ const routers = createBrowserRouter([
     path: '',
     element: <Layout />,
     children: [
-      { index: true, element: <Home /> },
-      { path: 'menu', element: <Menu /> },
-      { path: 'about', element: <About /> },
+      {
+        index: true, element: <ProtectedRoute><Home /></ProtectedRoute> },
+      { path: 'menu', element: <ProtectedRoute><Menu /></ProtectedRoute> },
+      { path: 'about', element: <ProtectedRoute><About /></ProtectedRoute> },
       { path: 'login', element: <Login/> },
       { path: 'register', element: <Register/> },
       { path: '*', element: <Error /> },
-      { path: 'payment', element: <Payment/> }
+      { path: 'payment', element: <ProtectedRoute><Payment /></ProtectedRoute> }
     ]
   }
 ])
@@ -31,7 +34,9 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={routers}></RouterProvider>
+      <UserContextProvider>
+        <RouterProvider router={routers}></RouterProvider>
+      </UserContextProvider>
     </>
   )
 }
