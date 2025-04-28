@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useMenu } from "../Context/menuContext"; // Make sure this path is correct
 
 export default function Home() {
   const navigate = useNavigate();
+  const { addToCart } = useMenu(); // Get addToCart function from context
 
   const categories = ["all", "burger", "pizza", "pasta"];
   const [menuItems, setMenuItems] = useState([]);
@@ -25,6 +27,7 @@ export default function Home() {
       } catch (err) {
         console.error("Error fetching menu items:", err);
         setError("Failed to load menu items.");
+        setMenuItems([]); // Ensure menuItems is always an array
       } finally {
         setLoading(false);
       }
@@ -35,7 +38,7 @@ export default function Home() {
 
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero Section (unchanged) */}
       <header className="h-screen w-full bg-[url('/hero-bg.jpg')] bg-cover bg-center bg-no-repeat flex items-center justify-center">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl text-center md:text-left md:ml-10 lg:ml-20 xl:ml-40">
@@ -56,7 +59,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Offers Section */}
+      {/* Offers Section (unchanged) */}
       <main className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8">
@@ -111,13 +114,12 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Menu Section */}
+      {/* Updated Menu Section */}
       <div className="py-[30px]">
         <div className="title-menu text-center text-3xl font-bold mb-8">
           Our Menu
         </div>
         <div className="container mx-auto px-4">
-
           {/* Tabs */}
           <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 justify-center mb-8">
             {categories.map((category) => (
@@ -143,7 +145,10 @@ export default function Home() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
               {menuItems.map((item) => (
-                <div key={item.id} className="box-menu shadow-sm bg-[#222831] cursor-pointer flex flex-col h-full hover:scale-105 transition-transform duration-300">
+                <div
+                  key={item.id}
+                  className="box-menu shadow-sm bg-[#222831] cursor-pointer flex flex-col h-full hover:scale-105 transition-transform duration-300"
+                >
                   <div className="flex justify-center img-box-menu bg-[#F1F2F3] h-48 overflow-hidden">
                     <img
                       className="rounded-full object-cover img-menu"
@@ -152,13 +157,20 @@ export default function Home() {
                     />
                   </div>
                   <div className="p-5 flex flex-col flex-grow">
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">{item.name}</h5>
-                    <p className="mb-3 font-normal text-[#FFFFFF] flex-grow">{item.description}</p>
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
+                      {item.name}
+                    </h5>
+                    <p className="mb-3 font-normal text-[#FFFFFF] flex-grow">
+                      {item.description}
+                    </p>
                     <div className="flex justify-between items-center mt-4">
                       <p className="text-[#FFFFFF]">{item.price} EGP</p>
                       <button
                         className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-3 focus:ring-4 focus:outline-none font-medium text-sm py-2 text-center transition-colors"
-                        onClick={() => navigate("/payment")}
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent any parent click handlers
+                          addToCart(item); // Add item to cart
+                        }}
                       >
                         <i className="fa-solid fa-cart-shopping"></i>
                       </button>
@@ -168,7 +180,6 @@ export default function Home() {
               ))}
             </div>
           )}
-
         </div>
       </div>
     </>

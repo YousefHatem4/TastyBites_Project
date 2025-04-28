@@ -1,35 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-
-const categories = ["all", "burger", "pizza", "pasta"];
+import React from 'react';
+import { useMenu } from '../Context/menuContext';
 
 export default function Menu() {
-  const [menuItems, setMenuItems] = useState([]);
-  const [activeCategory, setActiveCategory] = useState("all");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    async function fetchMenuItems() {
-      setLoading(true);
-      setError(null);
-      try {
-        let url = "https://eldeeb.pythonanywhere.com/api/menu/items/";
-        if (activeCategory !== "all") {
-          url += `?category=${activeCategory}`;
-        }
-        const response = await axios.get(url);
-        setMenuItems(response.data);
-      } catch (err) {
-        console.error('Error fetching menu items:', err);
-        setError('Failed to load menu items.');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchMenuItems();
-  }, [activeCategory]); // re-fetch when activeCategory changes
+  const {
+    menuItems = [], // Default to empty array if undefined
+    activeCategory,
+    loading,
+    error,
+    categories,
+    setActiveCategory,
+    addToCart
+  } = useMenu();
 
   if (loading) return <div className="text-center py-20">Loading...</div>;
   if (error) return <div className="text-center text-red-500 py-20">{error}</div>;
@@ -47,8 +28,8 @@ export default function Menu() {
               <button
                 onClick={() => setActiveCategory(category)}
                 className={`inline-block px-4 py-3 rounded-lg capitalize ${activeCategory === category
-                    ? 'text-white bg-[#222831]'
-                    : 'hover:text-gray-900 hover:bg-gray-100'
+                  ? 'text-white bg-[#222831]'
+                  : 'hover:text-gray-900 hover:bg-gray-100'
                   }`}
               >
                 {category}
@@ -82,7 +63,7 @@ export default function Menu() {
                   <p className="text-[#FFFFFF]">{item.price} EGP</p>
                   <button
                     className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-3 focus:ring-4 focus:outline-none font-medium text-sm py-2 text-center transition-colors"
-                    onClick={() => console.log(`Added ${item.name} to cart`)}
+                    onClick={() => addToCart(item)}
                   >
                     <i className="fa-solid fa-cart-shopping"></i>
                   </button>
@@ -91,7 +72,6 @@ export default function Menu() {
             </div>
           ))}
         </div>
-
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import Register from './component/Register/Register'
 import Payment from './component/Payment/Payment'
 import UserContextProvider from './component/Context/userContext'
 import ProtectedRoute from './component/ProtectedRoute/ProtectedRoute'
+import { MenuProvider } from './component/Context/menuContext';
 
 
 
@@ -35,7 +36,9 @@ function App() {
   return (
     <>
       <UserContextProvider>
-        <RouterProvider router={routers}></RouterProvider>
+        <MenuProvider>
+          <RouterProvider router={routers}></RouterProvider>
+        </MenuProvider>
       </UserContextProvider>
     </>
   )
