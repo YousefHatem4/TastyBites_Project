@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useMenu } from "../Context/menuContext";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Payment() {
   const { cartItems, updateCartItemQuantity, setCartItems } = useMenu();
+  const navigate = useNavigate();
 
   const [address, setAddress] = useState({
     street: "",
@@ -15,6 +17,8 @@ export default function Payment() {
 
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState("cash");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const validCoupons = ["yba24", "yy21", "bb20", "aa21", "gg21"];
 
@@ -23,55 +27,72 @@ export default function Payment() {
     setAddress(prev => ({ ...prev, [name]: value }));
   };
 
-  const handlePlaceOrder = () => {
-    console.log("Placing order:", { items: cartItems, address });
-    setCartItems([]);
+  const validateForm = () => {
+    if (!address.street || !address.city || !address.phone) {
+      toast.error("Please fill all required address fields");
+      return false;
+    }
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty");
+      return false;
+    }
+    return true;
+  };
+
+  const handlePlaceOrder = async () => {
+    if (!validateForm()) return;
+
+    setIsProcessing(true);
+
+    if (paymentMethod === "bank") {
+      navigate("/payment-process", {
+        state: {
+          orderDetails: {
+            items: cartItems,
+            address,
+            subtotal: subtotal,
+            discount: subtotal * discount,
+            total: discountedTotal
+          }
+        }
+      });
+    } else {
+      // Simulate API call for cash on delivery
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setCartItems([]);
+      toast.success("Order placed successfully! Cash on Delivery");
+      navigate("/order-confirmation", {
+        state: {
+          orderDetails: {
+            items: cartItems,
+            address,
+            subtotal: subtotal,
+            discount: subtotal * discount,
+            total: discountedTotal,
+            paymentMethod: "Cash on Delivery"
+          }
+        }
+      });
+    }
+    setIsProcessing(false);
   };
 
   const handleApplyCoupon = () => {
     if (validCoupons.includes(couponCode.toLowerCase())) {
-      setDiscount(0.1); // 10% discount
-      toast.success("Coupon applied successfully! 10% discount added.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      setDiscount(0.1);
+      toast.success("Coupon applied successfully! 10% discount added.");
     } else {
       setDiscount(0);
-      toast.error("Invalid coupon code. Please try again.", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-      });
+      toast.error("Invalid coupon code. Please try again.");
     }
   };
 
-  // Calculate subtotal
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const discountedTotal = subtotal - (subtotal * discount);
 
   return (
     <div className="container mx-auto py-18 px-4">
-      {/* Add ToastContainer at the top of your component */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <ToastContainer position="top-right" autoClose={3000} />
 
       <div className="flex flex-col md:flex-row justify-between gap-12 bg-gray-100 p-8 rounded-lg shadow-lg">
         {/* Billing Details */}
@@ -121,11 +142,6 @@ export default function Payment() {
                 className="w-full p-2 border rounded-md"
               />
             </div>
-
-            <div className="flex items-center gap-2">
-              <input type="checkbox" className="w-5 h-5" />
-              <span className="text-sm">Save this information for faster checkout next time</span>
-            </div>
           </form>
         </div>
 
@@ -146,6 +162,7 @@ export default function Payment() {
                           type="button"
                           onClick={() => updateCartItemQuantity(item.id, item.quantity - 1)}
                           className="w-8 h-8 flex items-center justify-center hover:bg-gray-100"
+                          disabled={item.quantity <= 1}
                         >
                           -
                         </button>
@@ -182,7 +199,13 @@ export default function Payment() {
             <h3 className="font-bold mb-2">Payment Method</h3>
             <div className="space-y-2">
               <label className="flex items-center gap-2">
-                <input type="radio" name="payment" />
+                <input
+                  type="radio"
+                  name="payment"
+                  value="bank"
+                  checked={paymentMethod === "bank"}
+                  onChange={() => setPaymentMethod("bank")}
+                />
                 <span>Bank Transfer</span>
                 <div className="flex gap-2 ml-4">
                   <img src="WhatsApp Image 2025-03-22 at 12.20.43 AM.jpeg" alt="Visa" className="w-10 h-auto" />
@@ -191,7 +214,13 @@ export default function Payment() {
                 </div>
               </label>
               <label className="flex items-center gap-2">
-                <input type="radio" name="payment" defaultChecked />
+                <input
+                  type="radio"
+                  name="payment"
+                  value="cash"
+                  checked={paymentMethod === "cash"}
+                  onChange={() => setPaymentMethod("cash")}
+                />
                 <span>Cash on Delivery</span>
               </label>
             </div>
@@ -208,7 +237,7 @@ export default function Payment() {
             />
             <button
               type="button"
-              className="bg-yellow-500 text-white px-4 py-2 rounded-md"
+              className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600"
               onClick={handleApplyCoupon}
             >
               Apply
@@ -218,10 +247,21 @@ export default function Payment() {
           {/* Place Order Button */}
           <button
             onClick={handlePlaceOrder}
-            className={`w-full bg-yellow-500 text-white p-3 rounded-md mt-4 font-bold text-lg ${cartItems.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-            disabled={cartItems.length === 0}
+            disabled={cartItems.length === 0 || isProcessing}
+            className={`w-full bg-yellow-500 text-white p-3 rounded-md mt-4 font-bold text-lg ${cartItems.length === 0 || isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:bg-yellow-600'
+              }`}
           >
-            Place Order
+            {isProcessing ? (
+              <span className="flex items-center justify-center">
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing...
+              </span>
+            ) : (
+              "Place Order"
+            )}
           </button>
         </div>
       </div>

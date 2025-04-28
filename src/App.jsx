@@ -11,6 +11,8 @@ import Payment from './component/Payment/Payment'
 import UserContextProvider from './component/Context/userContext'
 import ProtectedRoute from './component/ProtectedRoute/ProtectedRoute'
 import { MenuProvider } from './component/Context/menuContext';
+import OrderConfirmation from './component/OrderConfirm/OrderConfirm'
+import PaymentProcess from './component/PaymentProcess/PaymentProcess'
 
 
 
@@ -26,7 +28,9 @@ const routers = createBrowserRouter([
       { path: 'login', element: <Login/> },
       { path: 'register', element: <Register/> },
       { path: '*', element: <Error /> },
-      { path: 'payment', element: <ProtectedRoute><Payment /></ProtectedRoute> }
+      { path: 'payment', element: <ProtectedRoute><Payment /></ProtectedRoute> },
+      { path: '/payment-process', element: <ProtectedRoute><PaymentProcess /></ProtectedRoute> },
+      { path: '/order-confirmation', element: <ProtectedRoute><OrderConfirmation /></ProtectedRoute> }
     ]
   }
 ])
