@@ -128,6 +128,18 @@ export default function Navbar() {
                   About
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="recent-orders"
+                  className={({ isActive }) =>
+                    `hover:text-[#d99e1f] block py-2 px-3 md:p-0 rounded-sm ${isActive ? "main-color text-white md:bg-transparent" : "text-white"
+                    }`
+                  }
+                  onClick={closeMobileMenu}
+                >
+                  Orders
+                </NavLink>
+              </li>
 
               {/* Only show these in mobile view when not logged in */}
               {!userToken && (

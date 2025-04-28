@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 export default function OrderConfirmation() {
@@ -13,6 +13,20 @@ export default function OrderConfirmation() {
             </div>
         );
     }
+
+    // Inside your OrderConfirmation component, add this useEffect:
+    useEffect(() => {
+        if (orderDetails) {
+            const orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+            const newOrder = {
+                ...orderDetails,
+                orderId: `ORD-${Math.random().toString(36).substr(2, 8).toUpperCase()}`,
+                date: new Date().toISOString(),
+                status: 'Processing'
+            };
+            localStorage.setItem('orderHistory', JSON.stringify([newOrder, ...orderHistory]));
+        }
+    }, [orderDetails]);
 
     return (
         <div className="container mx-auto py-12 px-4">

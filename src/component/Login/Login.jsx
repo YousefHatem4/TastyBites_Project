@@ -44,7 +44,7 @@ export default function Login() {
     });
 
     return (
-        <div className="min-h-135 py-20">
+        <div className="min-h-160 py-50">
             <form onSubmit={formik.handleSubmit} className="max-w-md mx-auto">
                 {error && (
                     <div className="mb-4 p-3 bg-red-100 text-red-700 rounded">

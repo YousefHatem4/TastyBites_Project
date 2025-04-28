@@ -91,7 +91,7 @@ export default function Payment() {
   const discountedTotal = subtotal - (subtotal * discount);
 
   return (
-    <div className="container mx-auto py-18 px-4">
+    <div className="container mx-auto py-25 px-4">
       <ToastContainer position="top-right" autoClose={3000} />
 
       <div className="flex flex-col md:flex-row justify-between gap-12 bg-gray-100 p-8 rounded-lg shadow-lg">
@@ -162,7 +162,6 @@ export default function Payment() {
                           type="button"
                           onClick={() => updateCartItemQuantity(item.id, item.quantity - 1)}
                           className="w-8 h-8 flex items-center justify-center hover:bg-gray-100"
-                          disabled={item.quantity <= 1}
                         >
                           -
                         </button>

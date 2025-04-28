@@ -13,6 +13,8 @@ import ProtectedRoute from './component/ProtectedRoute/ProtectedRoute'
 import { MenuProvider } from './component/Context/menuContext';
 import OrderConfirmation from './component/OrderConfirm/OrderConfirm'
 import PaymentProcess from './component/PaymentProcess/PaymentProcess'
+import RecentOrders from './component/RecentOrders/RecentOrders'
+import OrderDetails from './component/OrderDetails/OrderDetails'
 
 
 
@@ -30,7 +32,9 @@ const routers = createBrowserRouter([
       { path: '*', element: <Error /> },
       { path: 'payment', element: <ProtectedRoute><Payment /></ProtectedRoute> },
       { path: '/payment-process', element: <ProtectedRoute><PaymentProcess /></ProtectedRoute> },
-      { path: '/order-confirmation', element: <ProtectedRoute><OrderConfirmation /></ProtectedRoute> }
+      { path: '/order-confirmation', element: <ProtectedRoute><OrderConfirmation /></ProtectedRoute> },
+      { path: '/recent-orders', element: <ProtectedRoute><RecentOrders /></ProtectedRoute> },
+      { path: '/order-details/:orderId', element: <ProtectedRoute><OrderDetails /></ProtectedRoute> },
     ]
   }
 ])
