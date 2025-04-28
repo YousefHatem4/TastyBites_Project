@@ -1,70 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 export default function Home() {
   const navigate = useNavigate();
 
-  const menuItems = [
-    {
-      id: 1,
-      name: "Seafood Pizza",
-      description: "A delicious pizza topped with shrimp, crab sticks, squid, and onions on a cheesy, golden crust. Perfect for seafood lovers!",
-      price: 170,
-      category: "pizza",
-      image: "/f1.png"
-    },
-    {
-      id: 2,
-      name: "Classic Cheeseburger",
-      description: "Juicy beef patty with melted cheese, fresh lettuce, tomatoes, and our special sauce on a toasted bun.",
-      price: 120,
-      category: "burger",
-      image: "/f4.png"
-    },
-    {
-      id: 3,
-      name: "Spaghetti Bolognese",
-      description: "Classic spaghetti with rich meat sauce, topped with parmesan cheese and fresh basil.",
-      price: 150,
-      category: "pasta",
-      image: "/f3.png"
-    },
-    {
-      id: 4,
-      name: "Pepperoni Pizza",
-      description: "Classic pepperoni pizza with extra cheese and our signature tomato sauce on a crispy crust.",
-      price: 180,
-      category: "pizza",
-      image: "/f6.png"
-    },
-    {
-      id: 5,
-      name: "Margherita Pizza",
-      description: "Simple yet delicious with tomato sauce, fresh mozzarella, and basil on our thin crust.",
-      price: 160,
-      category: "pizza",
-      image: "/f1.png"
-    },
-    {
-      id: 6,
-      name: "Chicken Burger",
-      description: "Crispy chicken fillet with lettuce, mayo, and pickles on a sesame seed bun.",
-      price: 110,
-      category: "burger",
-      image: "/f4.png"
-    }
-  ];
-
   const categories = ["all", "burger", "pizza", "pasta"];
-
+  const [menuItems, setMenuItems] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const filteredItems = activeCategory === "all"
-    ? menuItems
-    : menuItems.filter(item => item.category === activeCategory);
-   
-  
+  useEffect(() => {
+    async function fetchMenuItems() {
+      setLoading(true);
+      setError(null);
+      try {
+        let url = "https://eldeeb.pythonanywhere.com/api/menu/items/";
+        if (activeCategory !== "all") {
+          url += `?category=${activeCategory}`;
+        }
+        const response = await axios.get(url);
+        setMenuItems(response.data);
+      } catch (err) {
+        console.error("Error fetching menu items:", err);
+        setError("Failed to load menu items.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchMenuItems();
+  }, [activeCategory]);
+
   return (
     <>
+      {/* Hero Section */}
       <header className="h-screen w-full bg-[url('/hero-bg.jpg')] bg-cover bg-center bg-no-repeat flex items-center justify-center">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl text-center md:text-left md:ml-10 lg:ml-20 xl:ml-40">
@@ -74,17 +45,18 @@ export default function Home() {
             <p className="text-white text-sm sm:text-base md:text-lg mb-6 sm:mb-8 md:mb-10 max-w-lg mx-auto md:mx-0">
               TastyBites is a vibrant fast-food restaurant serving up delicious, quick, and satisfying meals. From juicy burgers and crispy fries to fresh wraps and savory snacks, we bring bold flavors and quality ingredients to every bite.
             </p>
-          <button
-            type="button"
-            className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-8 sm:px-10 py-2 sm:py-3 focus:ring-4 focus:border-none focus:outline-none font-medium text-sm sm:text-base transition duration-300"
-            onClick={() => navigate("/menu")} 
-          >
-            Order Now
-          </button>
+            <button
+              type="button"
+              className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-8 sm:px-10 py-2 sm:py-3 focus:ring-4 focus:border-none focus:outline-none font-medium text-sm sm:text-base transition duration-300"
+              onClick={() => navigate("/menu")}
+            >
+              Order Now
+            </button>
           </div>
         </div>
       </header>
 
+      {/* Offers Section */}
       <main className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8">
@@ -93,8 +65,7 @@ export default function Home() {
               <div className="w-1/3 flex items-center justify-center overflow-hidden">
                 <img
                   src="/src/assets/o1.jpg"
-                  className="w-32 h-32 sm:w-40 sm:h-40 scale-90 object-cover rounded-full border-4 border-[#FFBE33] 
-                     transition-transform duration-500 group-hover:scale-100"
+                  className="w-32 h-32 sm:w-40 sm:h-40 scale-90 object-cover rounded-full border-4 border-[#FFBE33] transition-transform duration-500 group-hover:scale-100"
                   alt="Thursday offer"
                 />
               </div>
@@ -106,7 +77,7 @@ export default function Home() {
                 <button
                   type="button"
                   className="self-start text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-6 sm:px-8 py-2 focus:ring-4 focus:outline-none font-medium text-sm sm:text-base transition duration-300"
-                  onClick={() => navigate("/payment")} 
+                  onClick={() => navigate("/payment")}
                 >
                   Order Now <i className="fa-solid fa-cart-shopping ml-2"></i>
                 </button>
@@ -114,12 +85,11 @@ export default function Home() {
             </div>
 
             {/* Offer 2 */}
-            <div className="flex-1 flex bg-[#222831] rounded-2xl p-6 hover:shadow-lg transition duration-300 group">
+            <div className="flex-1 flex bg-[#222831] rounded-2xl p-6 group">
               <div className="w-1/3 flex items-center justify-center overflow-hidden">
                 <img
                   src="/src/assets/o2.jpg"
-                  className="w-32 h-32 sm:w-40 sm:h-40 scale-90 object-cover rounded-full border-4 border-[#FFBE33] 
-                     transition-transform duration-500 group-hover:scale-100"
+                  className="w-32 h-32 sm:w-40 sm:h-40 scale-90 object-cover rounded-full border-4 border-[#FFBE33] transition-transform duration-500 group-hover:scale-100"
                   alt="Pizza offer"
                 />
               </div>
@@ -131,7 +101,7 @@ export default function Home() {
                 <button
                   type="button"
                   className="self-start text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-6 sm:px-8 py-2 focus:ring-4 focus:outline-none font-medium text-sm sm:text-base transition duration-300"
-                  onClick={() => navigate("/payment")} 
+                  onClick={() => navigate("/payment")}
                 >
                   Order Now <i className="fa-solid fa-cart-shopping ml-2"></i>
                 </button>
@@ -140,20 +110,23 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <div className='py-[30px]'>
-        <div className='title-menu text-center text-3xl font-bold mb-8'>
+
+      {/* Menu Section */}
+      <div className="py-[30px]">
+        <div className="title-menu text-center text-3xl font-bold mb-8">
           Our Menu
         </div>
-        <div className='container mx-auto px-4'>
+        <div className="container mx-auto px-4">
+
           {/* Tabs */}
           <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 justify-center mb-8">
-            {categories.map(category => (
+            {categories.map((category) => (
               <li key={category} className="me-2">
                 <button
                   onClick={() => setActiveCategory(category)}
                   className={`inline-block px-4 py-3 rounded-lg capitalize ${activeCategory === category
-                    ? 'text-white bg-[#222831]'
-                    : 'hover:text-gray-900 hover:bg-gray-100'
+                      ? "text-white bg-[#222831]"
+                      : "hover:text-gray-900 hover:bg-gray-100"
                     }`}
                 >
                   {category}
@@ -162,32 +135,40 @@ export default function Home() {
             ))}
           </ul>
 
-          <div className="flex flex-wrap justify-center gap-7">
-            {filteredItems.map(item => (
-              <div key={item.id} className="max-w-sm box-menu shadow-sm bg-[#222831] cursor-pointer ">
-                <div className='flex justify-center img-box-menu bg-[#F1F2F3] h-48 overflow-hidden'>
-                  <img
-                    className="w-full h-full  img-menu"
-                    src={item.image}
-                    alt={item.name}
-                  />
-                </div>
-                <div className="p-5">
-                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">{item.name}</h5>
-                  <p className="mb-3 font-normal text-[#FFFFFF]">{item.description}</p>
-                  <div className='flex justify-between items-center'>
-                    <p className='text-[#FFFFFF]'>{item.price} EGP</p>
-                    <button
-                      className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-3 focus:ring-4 focus:outline-none font-medium text-sm py-2 text-center transition-colors"
-                      onClick={() => navigate("/payment")}
-                    >
-                      <i className="fa-solid fa-cart-shopping"></i>
-                    </button>
+          {/* Menu Items */}
+          {loading ? (
+            <div className="text-center py-10">Loading...</div>
+          ) : error ? (
+            <div className="text-center text-red-500 py-10">{error}</div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
+              {menuItems.map((item) => (
+                <div key={item.id} className="box-menu shadow-sm bg-[#222831] cursor-pointer flex flex-col h-full hover:scale-105 transition-transform duration-300">
+                  <div className="flex justify-center img-box-menu bg-[#F1F2F3] h-48 overflow-hidden">
+                    <img
+                      className="rounded-full object-cover img-menu"
+                      src={item.image}
+                      alt={item.name}
+                    />
+                  </div>
+                  <div className="p-5 flex flex-col flex-grow">
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">{item.name}</h5>
+                    <p className="mb-3 font-normal text-[#FFFFFF] flex-grow">{item.description}</p>
+                    <div className="flex justify-between items-center mt-4">
+                      <p className="text-[#FFFFFF]">{item.price} EGP</p>
+                      <button
+                        className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-3 focus:ring-4 focus:outline-none font-medium text-sm py-2 text-center transition-colors"
+                        onClick={() => navigate("/payment")}
+                      >
+                        <i className="fa-solid fa-cart-shopping"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
+
         </div>
       </div>
     </>

@@ -50,8 +50,8 @@
 }
 
 .img-menu {
-  width: 152.188px;
-  height: 144.988px;
+  /* width: 152.188px;
+  height: 144.988px; */
   transition: all 0.2s ease-in-out;
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
@@ -71,6 +71,7 @@
 
 .box-menu {
   border-radius: 20px;
+  
   -webkit-border-radius: 20px;
   -moz-border-radius: 20px;
   -ms-border-radius: 20px;
