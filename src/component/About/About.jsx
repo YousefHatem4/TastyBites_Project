@@ -1,29 +1,28 @@
-import React from 'react'
+import React from 'react';
 
 export default function About() {
-  return <>
-    <div className='bg-[#232a36] h-[75vh] py-15 px-4 sm:px-6 lg:px-8'>
-      <div className='max-w-7xl mx-auto md:flex items-center'>
-        <div className='md:w-1/2 mb-8 md:mb-0'>
-          <img 
-            src="/src/assets/about-img.png"  // Adjusted path (assuming public/assets folder)
-            alt="About Feane" 
-            className='w-110 h-auto '
+  return (
+    <div className="bg-[#232a36] py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+        {/* صورة البرجر */}
+        <div className="w-full md:w-1/2 flex justify-center">
+          <img
+            src="/src/assets/about-img.png" // لازم تكون الصورة في public/assets
+            alt="About Feane"
+            className="w-full max-w-[400px] h-auto object-contain"
           />
         </div>
-        <div className='md:w-1/2 text-white'>
-          <h2 className='home-font text-4xl sm:text-5xl font-bold mb-6'>We Are Feane</h2>
-          <p className='text-base sm:text-lg mb-6 leading-relaxed'>
+
+        {/* النص */}
+        <div className="w-full md:w-1/2 text-white">
+          <h2 className="home-font text-4xl sm:text-5xl font-bold mb-6 text-center md:text-left">
+            We Are Feane
+          </h2>
+          <p className="text-base sm:text-lg leading-relaxed text-center md:text-left">
             There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.
           </p>
-          {/* <button
-            type="button"
-            className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-8 sm:px-10 py-2 sm:py-3 focus:ring-4 focus:outline-none font-medium text-sm sm:text-base transition duration-300"
-          >
-            Read More
-          </button> */}
         </div>
       </div>
     </div>
-  </>
+  );
 }
