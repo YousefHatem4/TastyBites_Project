@@ -42,7 +42,7 @@ export default function Register() {
             .matches(/^[A-Za-z]+$/, 'Last name must only contain letters')
             .required('Last name is required'),
         phone_number: Yup.string()
-            .matches(/^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/, 'Phone number is not valid')
+            .matches(/^(010|011|012|015)[0-9]{8}$/, 'Phone number is not valid')
             .required('Phone number is required'),
     });
 
