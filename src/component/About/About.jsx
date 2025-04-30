@@ -1,12 +1,12 @@
 import React from 'react';
-
+import img from '../../assets/about-img.png';
 export default function About() {
   return (
     <div className="bg-[#232a36] py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
         <div className="w-full md:w-1/2 flex justify-center">
           <img
-            src="/src/assets/about-img.png" 
+            src= {img}
             alt="About Feane"
             className="w-full max-w-[400px] h-auto object-contain"
           />

@@ -230,7 +230,6 @@ export default function Payment() {
             </button>
           </div>
 
-          {/* زرار تأكيد الطلب */}
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}

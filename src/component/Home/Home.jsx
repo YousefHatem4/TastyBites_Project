@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useMenu } from "../Context/menuContext"; // Make sure this path is correct
+import img1 from '../../assets/o1.jpg';
+import img2 from '../../assets/o2.jpg';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -67,7 +69,7 @@ export default function Home() {
             <div className="flex-1 flex bg-[#222831] rounded-2xl p-6 group">
               <div className="w-1/3 flex items-center justify-center overflow-hidden">
                 <img
-                  src="/src/assets/o1.jpg"
+                  src={img1}
                   className="w-32 h-32 sm:w-40 sm:h-40 scale-90 object-cover rounded-full border-4 border-[#FFBE33] transition-transform duration-500 group-hover:scale-100"
                   alt="Thursday offer"
                 />
@@ -91,7 +93,7 @@ export default function Home() {
             <div className="flex-1 flex bg-[#222831] rounded-2xl p-6 group">
               <div className="w-1/3 flex items-center justify-center overflow-hidden">
                 <img
-                  src="/src/assets/o2.jpg"
+                  src={img2}
                   className="w-32 h-32 sm:w-40 sm:h-40 scale-90 object-cover rounded-full border-4 border-[#FFBE33] transition-transform duration-500 group-hover:scale-100"
                   alt="Pizza offer"
                 />
