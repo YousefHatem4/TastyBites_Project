@@ -12,7 +12,6 @@ export default function About() {
           />
         </div>
 
-        {/* النص */}
         <div className="w-full md:w-1/2 text-white">
           <h2 className="home-font text-4xl sm:text-5xl font-bold mb-6 text-center md:text-left">
             We Are Feane
