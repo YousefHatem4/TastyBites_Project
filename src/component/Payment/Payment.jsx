@@ -3,23 +3,17 @@ import { useMenu } from "../Context/menuContext";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-
-const phoneRegExp = /^(010|011|012|015)[0-9]{8}$/;
-
-const validationSchema = Yup.object().shape({
-  street: Yup.string().required("Street is required"),
-  apartment: Yup.string(),
-  city: Yup.string().required("City is required"),
-  phone: Yup.string()
-    .matches(phoneRegExp, "Phone number must start with 010, 011, 012, or 015 and be 11 digits")
-    .required("Phone number is required"),
-});
 
 export default function Payment() {
   const { cartItems, updateCartItemQuantity, setCartItems } = useMenu();
   const navigate = useNavigate();
+
+  const [address, setAddress] = useState({
+    street: "",
+    apartment: "",
+    city: "",
+    phone: ""
+  });
 
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
@@ -27,6 +21,61 @@ export default function Payment() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const validCoupons = ["yba24", "yy21", "bb20", "aa21", "gg21"];
+
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    setAddress(prev => ({ ...prev, [name]: value }));
+  };
+
+  const validateForm = () => {
+    if (!address.street || !address.city || !address.phone) {
+      toast.error("Please fill all required address fields");
+      return false;
+    }
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty");
+      return false;
+    }
+    return true;
+  };
+
+  const handlePlaceOrder = async () => {
+    if (!validateForm()) return;
+
+    setIsProcessing(true);
+
+    if (paymentMethod === "bank") {
+      navigate("/payment-process", {
+        state: {
+          orderDetails: {
+            items: cartItems,
+            address,
+            subtotal: subtotal,
+            discount: subtotal * discount,
+            total: discountedTotal
+          }
+        }
+      });
+    } else {
+      // Simulate API call for cash on delivery
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setCartItems([]);
+      toast.success("Order placed successfully! Cash on Delivery");
+      navigate("/order-confirmation", {
+        state: {
+          orderDetails: {
+            items: cartItems,
+            address,
+            subtotal: subtotal,
+            discount: subtotal * discount,
+            total: discountedTotal,
+            paymentMethod: "Cash on Delivery"
+          }
+        }
+      });
+    }
+    setIsProcessing(false);
+  };
 
   const handleApplyCoupon = () => {
     if (validCoupons.includes(couponCode.toLowerCase())) {
@@ -38,51 +87,8 @@ export default function Payment() {
     }
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const discountedTotal = subtotal - subtotal * discount;
-
-  const initialValues = {
-    street: "",
-    apartment: "",
-    city: "",
-    phone: "",
-  };
-
-  const handlePlaceOrder = async (values) => {
-    if (cartItems.length === 0) {
-      toast.error("Your cart is empty");
-      return;
-    }
-
-    setIsProcessing(true);
-
-    const address = {
-      street: values.street,
-      apartment: values.apartment,
-      city: values.city,
-      phone: values.phone,
-    };
-
-    const orderDetails = {
-      items: cartItems,
-      address,
-      subtotal,
-      discount: subtotal * discount,
-      total: discountedTotal,
-      paymentMethod: paymentMethod === "bank" ? "Bank Transfer" : "Cash on Delivery",
-    };
-
-    if (paymentMethod === "bank") {
-      navigate("/payment-process", { state: { orderDetails } });
-    } else {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setCartItems([]);
-      toast.success("Order placed successfully! Cash on Delivery");
-      navigate("/order-confirmation", { state: { orderDetails } });
-    }
-
-    setIsProcessing(false);
-  };
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const discountedTotal = subtotal - (subtotal * discount);
 
   return (
     <div className="container mx-auto py-25 px-4">
@@ -92,47 +98,56 @@ export default function Payment() {
         {/* Billing Details */}
         <div className="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-bold mb-4">Billing Details</h2>
-
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handlePlaceOrder}
-          >
-            {({ handleSubmit }) => (
-              <Form className="space-y-4">
-                <div>
-                  <label className="block font-medium">Street Address*</label>
-                  <Field name="street" className="w-full p-2 border rounded-md" />
-                  <ErrorMessage name="street" component="p" className="text-red-500 text-sm" />
-                </div>
-
-                <div>
-                  <label className="block font-medium">Apartment, floor, etc. (optional)</label>
-                  <Field name="apartment" className="w-full p-2 border rounded-md" />
-                </div>
-
-                <div>
-                  <label className="block font-medium">Town/City*</label>
-                  <Field name="city" className="w-full p-2 border rounded-md" />
-                  <ErrorMessage name="city" component="p" className="text-red-500 text-sm" />
-                </div>
-
-                <div>
-                  <label className="block font-medium">Phone Number*</label>
-                  <Field name="phone" type="tel" className="w-full p-2 border rounded-md" />
-                  <ErrorMessage name="phone" component="p" className="text-red-500 text-sm" />
-                </div>
-
-                <button type="submit" className="hidden" onClick={handleSubmit}></button>
-              </Form>
-            )}
-          </Formik>
+          <form className="space-y-4">
+            <div>
+              <label className="block font-medium">Street Address*</label>
+              <input
+                type="text"
+                name="street"
+                value={address.street}
+                onChange={handleAddressChange}
+                required
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+            <div>
+              <label className="block font-medium">Apartment, floor, etc. (optional)</label>
+              <input
+                type="text"
+                name="apartment"
+                value={address.apartment}
+                onChange={handleAddressChange}
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+            <div>
+              <label className="block font-medium">Town/City*</label>
+              <input
+                type="text"
+                name="city"
+                value={address.city}
+                onChange={handleAddressChange}
+                required
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+            <div>
+              <label className="block font-medium">Phone Number*</label>
+              <input
+                type="tel"
+                name="phone"
+                value={address.phone}
+                onChange={handleAddressChange}
+                required
+                className="w-full p-2 border rounded-md"
+              />
+            </div>
+          </form>
         </div>
 
         {/* Order Summary */}
         <div className="w-full md:w-1/2 bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-
           {cartItems.length === 0 ? (
             <p className="text-center py-4">Your cart is empty</p>
           ) : (
@@ -164,7 +179,6 @@ export default function Payment() {
                   </div>
                 ))}
               </div>
-
               <div className="mt-4 space-y-2 text-gray-700">
                 <p className="flex justify-between">Subtotal: <span>{subtotal.toFixed(2)} EGP</span></p>
                 <p className="flex justify-between">Shipping: <span>Free</span></p>
@@ -194,11 +208,10 @@ export default function Payment() {
                 <span>Bank Transfer</span>
                 <div className="flex gap-2 ml-4">
                   <img src="WhatsApp Image 2025-03-22 at 12.20.43 AM.jpeg" alt="Visa" className="w-10 h-auto" />
-                  <img src="WhatsApp Image 2025-03-22 at 12.20.35 AM.jpeg" alt="MasterCard" className="w-10 h-auto" />
-                  <img src="WhatsApp Image 2025-03-22 at 12.11.45 AM.jpeg" alt="Meeza" className="w-10 h-auto" />
+                  <img src="WhatsApp Image 2025-03-22 at 12.11.45 AM.jpeg" alt="MasterCard" className="w-10 h-auto" />
+                  <img src="WhatsApp Image 2025-03-22 at 12.20.35 AM.jpeg" alt="Meeza" className="w-10 h-auto" />
                 </div>
               </label>
-
               <label className="flex items-center gap-2">
                 <input
                   type="radio"
@@ -212,7 +225,7 @@ export default function Payment() {
             </div>
           </div>
 
-          {/* Coupon */}
+          {/* Coupon Section */}
           <div className="mt-4 flex gap-2">
             <input
               type="text"
@@ -230,34 +243,25 @@ export default function Payment() {
             </button>
           </div>
 
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handlePlaceOrder}
+          {/* Place Order Button */}
+          <button
+            onClick={handlePlaceOrder}
+            disabled={cartItems.length === 0 || isProcessing}
+            className={`w-full bg-yellow-500 text-white p-3 rounded-md mt-4 font-bold text-lg ${cartItems.length === 0 || isProcessing ? 'opacity-50 cursor-not-allowed' : 'hover:bg-yellow-600'
+              }`}
           >
-            {({ handleSubmit }) => (
-              <button
-                type="submit"
-                onClick={handleSubmit}
-                disabled={cartItems.length === 0 || isProcessing}
-                className={`w-full bg-yellow-500 text-white p-3 rounded-md mt-4 font-bold text-lg ${
-                  cartItems.length === 0 || isProcessing ? "opacity-50 cursor-not-allowed" : "hover:bg-yellow-600"
-                }`}
-              >
-                {isProcessing ? (
-                  <span className="flex items-center justify-center">
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Processing...
-                  </span>
-                ) : (
-                  "Place Order"
-                )}
-              </button>
+            {isProcessing ? (
+              <span className="flex items-center justify-center">
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing...
+              </span>
+            ) : (
+              "Place Order"
             )}
-          </Formik>
+          </button>
         </div>
       </div>
     </div>
