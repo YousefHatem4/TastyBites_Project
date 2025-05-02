@@ -20,7 +20,7 @@ export default function Payment() {
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const validCoupons = ["yba24", "yy21", "bb20", "aa21", "gg21"];
+  const validCoupons = ["yba24", "yy21", "bb20", "aa21", "gg21","toka"];
 
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
