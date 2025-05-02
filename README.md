@@ -1,12 +1,24 @@
-# React + Vite
+# 🍽️ Tasty Bites
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Tasty Bites** is a fully responsive food ordering web application built using modern web technologies. The frontend is developed with **React** and styled using **Tailwind CSS**, ensuring a fast, sleek, and mobile-friendly user experience. It integrates with a powerful **Django REST API** backend for managing menus, orders, and addresses.
 
-Currently, two official plugins are available:
+## 🔧 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Frontend:** React, Tailwind CSS  
+- **Backend API:** Django REST Framework  
+- **Hosting:** Vercel (Frontend)
 
-## Expanding the ESLint configuration
+## ✅ Features
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- 100% Responsive design – optimized for mobile, tablet, and desktop  
+- Menu browsing with category filters  
+- Add-to-cart functionality with dynamic cart updates  
+- API-based order and address management  
+- Seamless integration between frontend and backend
+
+## 🌐 Live Demo
+
+👉 [https://tasty-bites-project.vercel.app/](https://tasty-bites-project.vercel.app/)
+
+## 📂 Project Structure (Frontend)
+
