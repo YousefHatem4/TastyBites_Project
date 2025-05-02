@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useMenu } from "../Context/menuContext"; // Make sure this path is correct
+import { useMenu } from "../Context/menuContext";
 import img1 from '../../assets/o1.jpg';
 import img2 from '../../assets/o2.jpg';
+import toast, { Toaster } from 'react-hot-toast'; // ✅ Toast import
 
 export default function Home() {
   const navigate = useNavigate();
-  const { addToCart } = useMenu(); // Get addToCart function from context
+  const { addToCart } = useMenu();
 
   const categories = ["all", "burger", "pizza", "pasta"];
   const [menuItems, setMenuItems] = useState([]);
@@ -29,7 +30,7 @@ export default function Home() {
       } catch (err) {
         console.error("Error fetching menu items:", err);
         setError("Failed to load menu items.");
-        setMenuItems([]); // Ensure menuItems is always an array
+        setMenuItems([]);
       } finally {
         setLoading(false);
       }
@@ -38,9 +39,16 @@ export default function Home() {
     fetchMenuItems();
   }, [activeCategory]);
 
+  const handleAddToCart = (item) => {
+    addToCart(item);
+    toast.success(`${item.name} added to cart!`);
+  };
+
   return (
     <>
-      {/* Hero Section (unchanged) */}
+      <Toaster position="top-right" reverseOrder={false} /> {/* ✅ Toast container */}
+
+      {/* Hero Section */}
       <header className="h-screen w-full bg-[url('/hero-bg.jpg')] bg-cover bg-center bg-no-repeat flex items-center justify-center">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl text-center md:text-left md:ml-10 lg:ml-20 xl:ml-40">
@@ -52,7 +60,7 @@ export default function Home() {
             </p>
             <button
               type="button"
-              className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-8 sm:px-10 py-2 sm:py-3 focus:ring-4 focus:border-none focus:outline-none font-medium text-sm sm:text-base transition duration-300"
+              className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-8 sm:px-10 py-2 sm:py-3 focus:ring-4 focus:outline-none font-medium text-sm sm:text-base transition duration-300"
               onClick={() => navigate("/menu")}
             >
               Order Now
@@ -61,7 +69,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Offers Section (unchanged) */}
+      {/* Offers Section */}
       <main className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8">
@@ -116,7 +124,7 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Updated Menu Section */}
+      {/* Menu Section */}
       <div className="py-[30px]">
         <div className="title-menu text-center text-3xl font-bold mb-8">
           Our Menu
@@ -129,8 +137,8 @@ export default function Home() {
                 <button
                   onClick={() => setActiveCategory(category)}
                   className={`inline-block px-4 py-3 rounded-lg capitalize ${activeCategory === category
-                      ? "text-white bg-[#222831]"
-                      : "hover:text-gray-900 hover:bg-gray-100"
+                    ? "text-white bg-[#222831]"
+                    : "hover:text-gray-900 hover:bg-gray-100"
                     }`}
                 >
                   {category}
@@ -170,8 +178,8 @@ export default function Home() {
                       <button
                         className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-3 focus:ring-4 focus:outline-none font-medium text-sm py-2 text-center transition-colors"
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevent any parent click handlers
-                          addToCart(item); // Add item to cart
+                          e.stopPropagation();
+                          handleAddToCart(item); // ✅ use toast
                         }}
                       >
                         <i className="fa-solid fa-cart-shopping"></i>

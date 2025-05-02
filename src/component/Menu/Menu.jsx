@@ -1,9 +1,10 @@
 import React from 'react';
+import toast, { Toaster } from 'react-hot-toast'; // ✅ import toast & Toaster
 import { useMenu } from '../Context/menuContext';
 
 export default function Menu() {
   const {
-    menuItems = [], // Default to empty array if undefined
+    menuItems = [],
     activeCategory,
     loading,
     error,
@@ -12,11 +13,19 @@ export default function Menu() {
     addToCart
   } = useMenu();
 
+  const handleAddToCart = (item) => {
+    addToCart(item);
+    toast.success(`${item.name} added to cart!`);
+  };
+
   if (loading) return <div className="text-center py-20">Loading...</div>;
   if (error) return <div className="text-center text-red-500 py-20">{error}</div>;
 
   return (
     <div className="py-[90px]">
+      {/* ✅ Add the Toaster component here */}
+      <Toaster position="top-right" reverseOrder={false} />
+
       <div className="title-menu text-center text-3xl font-bold mb-8">
         Our Menu
       </div>
@@ -63,7 +72,7 @@ export default function Menu() {
                   <p className="text-[#FFFFFF]">{item.price} EGP</p>
                   <button
                     className="text-white bg-[#FFBE33] hover:bg-[#d99e1f] cursor-pointer rounded-full px-3 focus:ring-4 focus:outline-none font-medium text-sm py-2 text-center transition-colors"
-                    onClick={() => addToCart(item)}
+                    onClick={() => handleAddToCart(item)} // ✅ Use local handler
                   >
                     <i className="fa-solid fa-cart-shopping"></i>
                   </button>
