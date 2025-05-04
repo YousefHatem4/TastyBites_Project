@@ -1,6 +1,6 @@
 # 🍽️ Tasty Bites
 
-**Tasty Bites** is a fully responsive food ordering web application built using modern web technologies. The frontend is developed with **React** and styled using **Tailwind CSS**, ensuring a fast, sleek, and mobile-friendly user experience. It integrates with a powerful **Django REST API** backend for managing menus, orders, and addresses.
+**Tasty Bites** is a fully responsive food ordering web application built using modern web technologies. Developed collaboratively as part of a team, the frontend is built with **React** and styled using **Tailwind CSS**, ensuring a fast, sleek, and mobile-friendly user experience. It integrates with a powerful **Django REST API** backend for managing menus, orders, and addresses.
 
 ## 🔧 Tech Stack
 
@@ -21,4 +21,3 @@
 👉 [https://tasty-bites-project.vercel.app/](https://tasty-bites-project.vercel.app/)
 
 ## 📂 Project Structure (Frontend)
-
